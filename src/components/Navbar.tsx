@@ -1,8 +1,6 @@
 import { Home, Briefcase, User } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-import { Home, Briefcase, User } from 'lucide-react';
-
 interface NavItem {
   id: string;
   icon: React.ElementType;
