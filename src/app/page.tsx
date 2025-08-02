@@ -1,103 +1,102 @@
-import Image from "next/image";
+import { AnimatePresence, motion } from 'framer-motion';
+import { useState, useEffect } from 'react';
+import Bottomnav from '@/components/Navbar';
+import Discovery from '@/components/pages/Discovery';
+import Profile from '@/components/pages/Profile';
+import LandingPage from '@/components/pages/LandingPage'; // Corrected typo
+import LoadingScreen from '@/components/LoadingScreen';
+import HomePage from '@/components/pages/HomePage'; // Assuming HomePage exists
 
-export default function Home() {
+interface PageProps {}
+
+const Page: React.FC<PageProps> = () => {
+  const [currentPage, setCurrentPage] = useState<string>('home');
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isChangingPage, setIsChangingPage] = useState<boolean>(false);
+  const [isWalletConnected, setIsWalletConnected] = useState<boolean>(false);
+  
+
+  const handlePageChange = (newPage: string) => {
+    setIsChangingPage(true)
+    setTimeout(() => {
+      setCurrentPage(newPage)
+      setIsChangingPage(false)
+    }, 300)
+  }
+
+  const handleWalletConnect = () => {
+    setIsWalletConnected(true);
+    // You could also store this in localStorage to persist the connection
+    localStorage.setItem('walletConnected', 'true');
+  }
+
+  const pageVariants = {
+    initial: {
+      opacity: 0,
+      x: 20,
+    },
+    animate: {
+      opacity: 1,
+      x: 0,
+    },
+    exit: {
+      opacity: 0,
+      x: -20,
+    },
+  }
+
+  const renderPage = () => {
+    const props = {
+      initial: "initial",
+      animate: "animate",
+      exit: "exit",
+      variants: pageVariants,
+      transition: { duration: 0.3 },
+      className: "w-full",
+    }
+
+    switch(currentPage) {
+      case 'home':
+        return <motion.div key="home" {...props}><HomePage /></motion.div>
+      case 'discovery':
+        return <motion.div key="discovery" {...props}><Discovery /></motion.div>
+      case 'profile':
+        return <motion.div key="profile" {...props}><Profile /></motion.div>
+      default:
+        return <motion.div key="home" {...props}><HomePage /></motion.div>
+    }
+  }
+
+  useEffect(() => {
+    // Check if wallet was previously connected
+    const wasConnected = localStorage.getItem('walletConnected') === 'true';
+    setIsWalletConnected(wasConnected);
+  }, [])
+
+  if (isLoading) {
+    return <LoadingScreen />
+  }
+
+  if (!isWalletConnected) {
+    return <LandingPage onConnect={handleWalletConnect} />
+  }
+
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <div className="min-h-screen flex flex-col items-center bg-bg">
+      <AnimatePresence mode="wait">
+        <div className="w-full max-w-xl mx-auto relative">   
+          <AnimatePresence mode="wait">
+            {renderPage()}
+          </AnimatePresence>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        <Bottomnav 
+          activePage={currentPage} 
+          setActivePage={handlePageChange}
+          disabled={isChangingPage}
+        />
+      </AnimatePresence>
     </div>
-  );
+  )
 }
+
+export default Page
