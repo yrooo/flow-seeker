@@ -70,9 +70,16 @@ const Page: React.FC<PageProps> = () => {
   }
 
   useEffect(() => {
+    // Simulate loading time
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 2000); // Adjust loading time as needed
+
     // Check if wallet was previously connected
     const wasConnected = localStorage.getItem('walletConnected') === 'true';
     setIsWalletConnected(wasConnected);
+
+    return () => clearTimeout(timer);
   }, [])
 
   if (isLoading) {

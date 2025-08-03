@@ -12,9 +12,7 @@ interface LandingPageProps {
 const LandingPage: React.FC<LandingPageProps> = ({ onConnect }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [user, setUser] = useState<{ loggedIn: boolean }>({ loggedIn: false });
-
   
-
   const handleConnectWallet = async () => {
     setIsLoading(true);
     try {
@@ -60,7 +58,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onConnect }) => {
             transition={{ delay: 0.4 }}
             className="bg-white rounded-base p-4 border-2 border-black shadow-light"
           >
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 border-border shadow-shadow">
               <div className="bg-main p-2 rounded-full border-2 border-black">✨</div>
               <div>
                 <h3 className="text-left font-heading">Decentralized Profile</h3>
@@ -80,6 +78,21 @@ const LandingPage: React.FC<LandingPageProps> = ({ onConnect }) => {
               <div>
                 <h3 className="text-left font-heading">Web3 Job Market</h3>
                 <p className="text-sm text-gray-600">Connect directly with Web3 employers</p>
+              </div>
+            </div>
+          </motion.div>
+          {/* New Feature */}
+          <motion.div
+            initial={{ x: -50, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ delay: 0.8 }}
+            className="bg-white rounded-base p-4 border-2 border-black shadow-light"
+          >
+            <div className="flex items-center gap-3">
+              <div className="bg-main p-2 rounded-full border-2 border-black">💬</div>
+              <div>
+                <h3 className="text-left font-heading">Direct Communication</h3>
+                <p className="text-sm text-gray-600">Chat securely with employers and candidates</p>
               </div>
             </div>
           </motion.div>
