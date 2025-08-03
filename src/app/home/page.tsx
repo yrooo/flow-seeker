@@ -1,3 +1,4 @@
+"use client";
 import { Briefcase, FileText, Eye, CalendarCheck, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 

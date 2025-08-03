@@ -1,5 +1,8 @@
-import { Home, Briefcase, User } from 'lucide-react';
+"use client";
+
 import { motion, AnimatePresence } from 'framer-motion';
+import { useRouter, usePathname } from 'next/navigation';
+import { Home, Briefcase, User } from 'lucide-react'; // Assuming lucide-react for icons
 
 interface NavItem {
   id: string;
@@ -7,98 +10,75 @@ interface NavItem {
   label: string;
 }
 
-interface BottomnavProps {
-  activePage: string;
-  setActivePage: (page: string) => void;
-  disabled: boolean;
-}
+const Navbar: React.FC = () => {
+  const router = useRouter();
+  const pathname = usePathname();
 
-const Bottomnav: React.FC<BottomnavProps> = ({ activePage, setActivePage, disabled }) => {
   const navItems = [
     { id: 'home', icon: Home, label: 'Home' },
     { id: 'discovery', icon: Briefcase, label: 'Discovery' },
     { id: 'profile', icon: User, label: 'Profile' }
   ];
 
-  const containerVariants = {
-    hidden: { 
-      opacity: 0, 
-      y: 100 
-    },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      transition: {
-        duration: 0.6,
-        ease: [0.16, 1, 0.3, 1],
-        when: "beforeChildren",
-        staggerChildren: 0.1
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { 
-      opacity: 0, 
-      y: 20 
-    },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      transition: {
-        duration: 0.3,
-        ease: "easeOut"
-      }
-    }
-  };
-
   return (
-    <AnimatePresence>
-      <motion.div 
-        className="fixed bottom-0 left-0 right-0 flex justify-center w-full p-4 z-40"
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-        exit="hidden"
-      >
-        <nav className="bg-white rounded-full px-8 py-3 border-2 border-black shadow-light max-w-60 w-full">
-          <div className="flex justify-between items-center">
-            {navItems.map(({ id, icon: Icon, label }) => (
-              <motion.button
-                key={id}
-                variants={itemVariants}
-                onClick={() => !disabled && setActivePage(id)}
-                className={`cursor-pointer group flex flex-col items-center relative ${
-                  disabled ? 'pointer-events-none' : ''
-                }`}
-                aria-label={label}
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Icon 
-                  size={24} 
-                  className={`
-                    transition-all duration-300 
-                    ${activePage === id 
-                      ? 'text-black stroke-[2]' 
-                      : 'stroke-[1.5] opacity-40'
-                    }
-                  `}
-                />
-                {activePage === id && (
-                  <motion.div
-                    layoutId="activeTab"
-                    className="absolute -bottom-2 w-1 h-1 bg-black rounded-full"
-                    transition={{ type: "spring", stiffness: 260, damping: 20 }}
-                  />
-                )}
-              </motion.button>
-            ))}
-          </div>
-        </nav>
-      </motion.div>
-    </AnimatePresence>
+    <>
+      <AnimatePresence>
+        {pathname !== '/landing' && (
+          <motion.nav
+            initial={{ y: 100, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: 100, opacity: 0 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+            className="w-full bg-white border-b-2 border-black shadow-md p-4 z-50 hidden md:block"
+          >
+            <ul className="flex justify-start items-center space-x-8">
+              {navItems.map((item) => (
+                <li key={item.id}>
+                  <button
+                    onClick={() => router.push(`/${item.id}`)}
+                    className={`flex items-center p-2 rounded-lg transition-colors duration-200
+                      ${pathname === `/${item.id}` ? 'text-main' : 'text-gray-500'}`} 
+                    // For desktop, nav items are horizontal
+                  >
+                    <item.icon size={24} />
+                    <span className="text-base ml-2">{item.label}</span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </motion.nav>
+        )}
+      </AnimatePresence>
+
+      {/* Mobile Navbar */}
+      <AnimatePresence>
+        {pathname !== '/landing' && (
+          <motion.nav
+            initial={{ y: 100, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: 100, opacity: 0 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+            className="fixed bottom-0 left-0 right-0 bg-white border-t-2 border-black shadow-top rounded-t-2xl p-4 z-50 md:hidden"
+          >
+            <ul className="flex justify-around items-center">
+              {navItems.map((item) => (
+                <li key={item.id}>
+                  <button
+                    onClick={() => router.push(`/${item.id}`)}
+                    className={`flex flex-col items-center p-2 rounded-lg transition-colors duration-200
+                      ${pathname === `/${item.id}` ? 'text-main' : 'text-gray-500'}`}
+                  >
+                    <item.icon size={24} />
+                    <span className="text-xs mt-1">{item.label}</span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </motion.nav>
+        )}
+      </AnimatePresence>
+    </>
   );
 };
 
-export default Bottomnav;
+export default Navbar;

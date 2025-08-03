@@ -4,7 +4,7 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: oklch(96.47% 0.0401 157.79);
+  --background: #f1efe7;
   --secondary-background: oklch(100% 0 0);
   --foreground: oklch(0% 0 0);
   --main-foreground: oklch(0% 0 0);
@@ -71,4 +71,17 @@
   h1, h2, h3, h4, h5, h6{
     @apply font-heading;
   }
+}
+
+::-webkit-scrollbar {
+  width: 16px;
+  outline: 4px solid #000000;
+}
+
+::-webkit-scrollbar-track {
+  background: #ffffff;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #000000;
 }

@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect } from 'react';
 import { Search, Building2, DollarSign, MapPin, Briefcase, Filter, Clock, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -31,9 +33,6 @@ const Discovery: React.FC = () => {
   const [jobDialogOpen, setJobDialogOpen] = useState<boolean>(false);
   const [searchDialogOpen, setSearchDialogOpen] = useState<boolean>(false);
   const [filteredJobs, setFilteredJobs] = useState<JobListing[]>([]);
-  
-  
-  
   
   const jobListings = [
     {
@@ -160,12 +159,12 @@ const Discovery: React.FC = () => {
 
   const handleJobClick = (job: JobListing) => {
     setSelectedJob(job);
-    setJobDrawerOpen(true);
+    setJobDialogOpen(true);
   };
 
   // Reset filtered jobs when search drawer closes
   useEffect(() => {
-    if (!searchDrawerOpen) {
+    if (!searchDialogOpen) {
       setSearchQuery('');
       setFilteredJobs([]);
     }

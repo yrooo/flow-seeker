@@ -1,111 +1,132 @@
 "use client";
 
-import { AnimatePresence, motion } from 'framer-motion';
-import { useState, useEffect } from 'react';
-import Bottomnav from '@/components/Navbar';
-import Discovery from '@/components/pages/Discovery';
-import Profile from '@/components/pages/Profile';
-import LandingPage from '@/components/pages/LandingPage'; // Corrected typo
-import LoadingScreen from '@/components/LoadingScreen';
-import HomePage from '@/components/pages/HomePage'; // Assuming HomePage exists
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useConnectModal } from '@rainbow-me/rainbowkit';
+import { useAccount } from 'wagmi';
+import { motion } from 'framer-motion';
+import { ArrowRight, Wallet } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
-interface PageProps {}
+const LandingPage: React.FC = () => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const router = useRouter();
+  const { openConnectModal } = useConnectModal();
 
-const Page: React.FC<PageProps> = () => {
-  const [currentPage, setCurrentPage] = useState<string>('home');
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [isChangingPage, setIsChangingPage] = useState<boolean>(false);
-  const [isWalletConnected, setIsWalletConnected] = useState<boolean>(false);
-  
-
-  const handlePageChange = (newPage: string) => {
-    setIsChangingPage(true)
-    setTimeout(() => {
-      setCurrentPage(newPage)
-      setIsChangingPage(false)
-    }, 300)
-  }
-
-  const handleWalletConnect = () => {
-    setIsWalletConnected(true);
-    // You could also store this in localStorage to persist the connection
-    localStorage.setItem('walletConnected', 'true');
-  }
-
-  const pageVariants = {
-    initial: {
-      opacity: 0,
-      x: 20,
-    },
-    animate: {
-      opacity: 1,
-      x: 0,
-    },
-    exit: {
-      opacity: 0,
-      x: -20,
-    },
-  }
-
-  const renderPage = () => {
-    const props = {
-      initial: "initial",
-      animate: "animate",
-      exit: "exit",
-      variants: pageVariants,
-      transition: { duration: 0.3 },
-      className: "w-full",
-    }
-
-    switch(currentPage) {
-      case 'home':
-        return <motion.div key="home" {...props}><HomePage /></motion.div>
-      case 'discovery':
-        return <motion.div key="discovery" {...props}><Discovery /></motion.div>
-      case 'profile':
-        return <motion.div key="profile" {...props}><Profile /></motion.div>
-      default:
-        return <motion.div key="home" {...props}><HomePage /></motion.div>
-    }
-  }
-
-  useEffect(() => {
-    // Simulate loading time
-    const timer = setTimeout(() => {
+  const handleConnectWallet = async () => {
+    setIsLoading(true);
+    try {
+      openConnectModal && openConnectModal();
+      // After successful connection, redirect to home page
+      router.push('/home');
+    } catch (error) {
+      console.error('Error connecting wallet:', error);
+      // You might want to show an error message to the user
+    } finally {
       setIsLoading(false);
-    }, 2000); // Adjust loading time as needed
-
-    // Check if wallet was previously connected
-    const wasConnected = localStorage.getItem('walletConnected') === 'true';
-    setIsWalletConnected(wasConnected);
-
-    return () => clearTimeout(timer);
-  }, [])
-
-  if (isLoading) {
-    return <LoadingScreen />
-  }
-
-  if (!isWalletConnected) {
-    return <LandingPage onConnect={handleWalletConnect} />
-  }
+    }
+  };
 
   return (
-    <div className="min-h-screen flex flex-col items-center bg-bg">
-      <AnimatePresence mode="wait">
-        <div className="w-full max-w-xl mx-auto relative">   
-          <AnimatePresence mode="wait">
-            {renderPage()}
-          </AnimatePresence>
+    <div className="min-h-screen bg-bg flex flex-col items-center justify-center p-6">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="w-full max-w-md space-y-8"
+      >
+        {/* Hero Section */}
+        <div className="text-center space-y-4">
+          <motion.div 
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ delay: 0.2, type: "spring" }}
+            className="w-24 h-24 bg-main rounded-2xl border-4 border-black shadow-light mx-auto flex items-center justify-center"
+          >
+            <span className="text-4xl">🚀</span>
+          </motion.div>
+          
+          <h1 className="text-4xl font-heading">Welcome to Lisk Seeker</h1>
+          <p className="text-gray-600">Your Web3 Career Hub</p>
         </div>
-        <Bottomnav 
-          activePage={currentPage} 
-          setActivePage={handlePageChange}
-          disabled={isChangingPage}
-        />
-      </AnimatePresence>
-    </div>
-  )
-}
 
-export default Page
+        {/* Features */}
+        <div className="space-y-4">
+          <motion.div
+            initial={{ x: -50, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ delay: 0.4 }}
+            className="bg-white rounded-base p-4 border-2 border-black shadow-shadow"
+          >
+            <div className="flex items-center gap-3 border-border">
+              <div className="bg-main p-2 rounded-full border-2 border-black">✨</div>
+              <div>
+                <h3 className="text-left font-heading">Decentralized Profile</h3>
+                <p className="text-sm text-gray-600">Own your professional identity on Lisk</p>
+              </div>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ x: 50, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ delay: 0.6 }}
+            className="bg-white rounded-base p-4 border-2 border-black shadow-light"
+          >
+            <div className="flex items-center gap-3">
+              <div className="bg-main p-2 rounded-full border-2 border-black">💼</div>
+              <div>
+                <h3 className="text-left font-heading">Web3 Job Market</h3>
+                <p className="text-sm text-gray-600">Connect directly with Web3 employers</p>
+              </div>
+            </div>
+          </motion.div>
+          {/* New Feature */}
+          <motion.div
+            initial={{ x: -50, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ delay: 0.8 }}
+            className="bg-white rounded-base p-4 border-2 border-black shadow-light"
+          >
+            <div className="flex items-center gap-3">
+              <div className="bg-main p-2 rounded-full border-2 border-black">💬</div>
+              <div>
+                <h3 className="text-left font-heading">Direct Communication</h3>
+                <p className="text-sm text-gray-600">Chat securely with employers and candidates</p>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Connect Wallet Button */}
+        <motion.div
+          initial={{ y: 50, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.8 }}
+          className="pt-6"
+        >
+          <Button
+            onClick={handleConnectWallet}
+            className="w-full py-6 bg-black text-white justify-center"
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <div className="flex items-center gap-2">
+                <div className="animate-spin w-5 h-5 border-2 border-white border-t-transparent rounded-full" />
+                <span>Connecting...</span>
+              </div>
+            ) : (
+              <div className="flex items-center gap-2">
+                <Wallet size={20} />
+                <span>Connect Lisk Wallet</span>
+                <ArrowRight size={20} />
+              </div>
+            )}
+          </Button>
+        </motion.div>
+      </motion.div>
+    </div>
+  );
+};
+
+export default LandingPage;
