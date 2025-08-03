@@ -174,7 +174,7 @@ const Discovery: React.FC = () => {
     <div
       key={job.id}
       onClick={() => handleJobClick(job)}
-      className="bg-white rounded-base p-4 border-2 border-black shadow-light 
+      className="bg-white rounded-base p-4 border-2 border-black shadow-shadow
         hover:translate-x-boxShadowX hover:translate-y-boxShadowY hover:shadow-none 
         transition-all cursor-pointer"
     >
@@ -220,7 +220,7 @@ const Discovery: React.FC = () => {
   );
 
   return (
-    <div className="flex flex-col p-4 gap-6 pb-24">
+    <div className="flex flex-col p-4 gap-6 px-112">
       {/* Header */}
       <div className="text-left mt-2">
         <h1 className="text-3xl font-heading mb-2">Find Jobs 🎯</h1>

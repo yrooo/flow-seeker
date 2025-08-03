@@ -41,7 +41,7 @@ const HomePage: React.FC = () => {
   ];
 
   return (
-    <div className="flex flex-col p-4 gap-8 pb-24">
+    <div className="flex flex-col p-4 gap-8 px-112">
       {/* Welcome Section */}
       <div className="text-left mt-2">
         <h1 className="text-3xl font-heading mb-2">Welcome back! 👋</h1>
@@ -50,7 +50,7 @@ const HomePage: React.FC = () => {
       
       {/* Stats Grid */}
       <div className="grid grid-cols-2 gap-4">
-        <div className="bg-main rounded-base p-6 border-2 border-black shadow-light col-span-2">
+        <div className="bg-main rounded-base p-6 border-2 border-black shadow-shadow col-span-2">
           <div className="flex items-center gap-2 mb-4">
             <FileText size={24} className="text-black" />
             <h2 className="font-heading text-lg">Total Applications</h2>
@@ -59,7 +59,7 @@ const HomePage: React.FC = () => {
           <p className="text-sm text-gray-600">Keep pushing forward! 🚀</p>
         </div>
         
-        <div className="bg-white rounded-base p-4 border-2 border-black shadow-light">
+        <div className="bg-white rounded-base p-4 border-2 border-black shadow-shadow">
           <div className="flex items-center gap-2 mb-2">
             <Eye size={20} className="text-black" />
             <div className="text-sm font-heading">Profile Views</div>
@@ -67,7 +67,7 @@ const HomePage: React.FC = () => {
           <div className="text-2xl font-heading">{stats.viewedBy}</div>
         </div>
         
-        <div className="bg-white rounded-base p-4 border-2 border-black shadow-light">
+        <div className="bg-white rounded-base p-4 border-2 border-black shadow-shadow">
           <div className="flex items-center gap-2 mb-2">
             <CalendarCheck size={20} className="text-black" />
             <div className="text-sm font-heading">Interviews</div>
@@ -89,7 +89,7 @@ const HomePage: React.FC = () => {
         {recentApplications.map((app, index) => (
           <div 
             key={index}
-            className="bg-white rounded-base p-4 border-2 border-black shadow-light hover:translate-x-boxShadowX hover:translate-y-boxShadowY hover:shadow-none transition-all cursor-pointer"
+            className="bg-white rounded-base p-4 border-2 border-black shadow-shadow hover:translate-x-boxShadowX hover:translate-y-boxShadowY hover:shadow-none transition-all cursor-pointer"
           >
             <div className="flex justify-between items-center">
               <div>

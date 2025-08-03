@@ -52,7 +52,7 @@ const Profile: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col p-2 gap-6 pb-24">
+    <div className="flex flex-col p-2 gap-6 px-112">
       {/* Profile Card */}
       <div className="bg-main rounded-base p-6 border-2 border-black shadow-light">
         <div className="flex flex-col items-center gap-4">
