@@ -4,7 +4,6 @@ import { useAccount } from 'wagmi';
 import { motion } from 'framer-motion';
 import { ArrowRight, Wallet } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useState, useEffect } from 'react';
 
 interface LandingPageProps {
   onConnect: (user: { loggedIn: boolean }) => void;
@@ -19,6 +18,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onConnect }) => {
   const handleConnectWallet = async () => {
     setIsLoading(true);
     try {
+      const { openConnectModal } = useConnectModal();
       openConnectModal && openConnectModal();
        onConnect && onConnect({ loggedIn: true });
     } catch (error) {

@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { User, Mail, Briefcase, Award, LogOut, Copy, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAccount } from 'wagmi';
-import { useState, useEffect } from 'react';
 
 interface UserWalletState {
   loggedIn: boolean | null;

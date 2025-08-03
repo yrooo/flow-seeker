@@ -1,8 +1,6 @@
 import { Briefcase, FileText, Eye, CalendarCheck, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
-import { FileText, Eye, CalendarCheck, ChevronRight, Briefcase } from 'lucide-react';
-
 interface Stats {
   totalScore: string;
   viewedBy: string;
